@@ -8,7 +8,7 @@ HEIGHT = 750
 
 pygame.display.set_caption('backgroun image example')
 
-background = pygame.image.load('images/wmremove-transformed_Nero_AI_Image_Upscaler_Photo_Face.webp')
+background = pygame.image.load('images/snakes.jpg')
 
 
 player = Actor("player", (750, 375))
