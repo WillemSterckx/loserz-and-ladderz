@@ -5,8 +5,6 @@ import pygame.display
 WIDTH = 1500
 HEIGHT = 750
 
-DISPLAYSURF = pygame.display.set_mode((1500, 750), pygame.FULLSCREEN)
-
 pygame.display.set_caption('backgroun image example')
 
 background = pygame.image.load('images/snakes.jpg')
@@ -14,7 +12,7 @@ background = pygame.image.load('images/snakes.jpg')
 player = Actor("player", (750, 375))
 
 def draw():
-    screen.clear()
+    screen.surface = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
     screen.blit(background, (0, 0))
     player.draw()
 
