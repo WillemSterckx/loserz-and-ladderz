@@ -38,7 +38,8 @@ counterred = 0
 
 bluepl = True
 
-bluetile = "boo"
+bluetile = "0"
+redtile = "0"
 
 my_font = pygame.font.SysFont('Comic Sans MS', 30)
 
@@ -49,7 +50,9 @@ def draw():
     red.draw()
 
     blue_tile = my_font.render(bluetile, False, (255, 255, 255))
+    red_tile = my_font.render(redtile, False, (255, 255, 255))
     screen.blit(blue_tile, (1200, 230))
+    screen.blit(red_tile, (1200, 380))
 
 def move_blue():
     global counterblue
@@ -94,7 +97,7 @@ def move_red():
 
 
 def on_key_down(key):
-    global counterblue, counterred, bluepl, bluetile
+    global counterblue, counterred, bluepl, bluetile, redtile
     if key == keys.F:
         screen.surface = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
     elif key == keys.W:
@@ -112,8 +115,8 @@ def on_key_down(key):
         red.y = 830
         counterred = 0
 
-        screen.fill(pygame.Color("black"))
-        bluetile = "nuh uh"
+        # screen.fill(pygame.Color("black"))
+        # bluetile = "nuh uh"
 
     if key == keys.SPACE:
         if bluepl:
@@ -206,7 +209,7 @@ def on_key_down(key):
 
             bluepl = False
 
-        else :
+        else:
             dice = random.randint(1, 6)
             counterred += dice
             if counterred > 99:
@@ -278,6 +281,9 @@ def on_key_down(key):
                 red.x = sq[counterred]
                 move_red()
 
+            screen.fill(pygame.Color("black"))
+            redtile = str((counterred + 1))
+
             if dice == 1:
                 screen.blit(one, (10, 200))
             elif dice == 2:
@@ -292,11 +298,6 @@ def on_key_down(key):
                 screen.blit(six, (10, 200))
             bluepl = True
 
-def update():
-    # Move the player with arrow keys
-    if keyboard.left:
-        blue.x = blue.x - 1
-    elif keyboard.right:
-        blue.x = blue.x + 1
+
 
 pgzrun.go()
