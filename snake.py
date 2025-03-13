@@ -97,7 +97,6 @@ def move_red():
     elif 90 <= counterred <= 100:
         red.y = 155
 
-
 def on_key_down(key):
     global counterblue, counterred, bluepl, bluetile, redtile
     if key == keys.F:
