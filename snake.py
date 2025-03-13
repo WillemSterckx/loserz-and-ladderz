@@ -38,7 +38,7 @@ counterred = 0
 
 bluepl = True
 
-funnytext = "boo"
+bluetile = "boo"
 
 my_font = pygame.font.SysFont('Comic Sans MS', 30)
 
@@ -48,8 +48,8 @@ def draw():
     blue.draw()
     red.draw()
 
-    text_surface = my_font.render(funnytext, False, (255, 255, 255))
-    screen.blit(text_surface, (0, 0))
+    blue_tile = my_font.render(bluetile, False, (255, 255, 255))
+    screen.blit(blue_tile, (1200, 230))
 
 def move_blue():
     global counterblue
@@ -94,7 +94,7 @@ def move_red():
 
 
 def on_key_down(key):
-    global counterblue, counterred, bluepl, funnytext
+    global counterblue, counterred, bluepl, bluetile
     if key == keys.F:
         screen.surface = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
     elif key == keys.W:
@@ -113,7 +113,7 @@ def on_key_down(key):
         counterred = 0
 
         screen.fill(pygame.Color("black"))
-        funnytext = "nuh uh"
+        bluetile = "nuh uh"
 
     if key == keys.SPACE:
         if bluepl:
@@ -155,7 +155,6 @@ def on_key_down(key):
                 blue.x = sq[counterblue]
                 move_blue()
 
-
             if counterblue == 16:
                 counterblue = 6
                 blue.x = sq[counterblue]
@@ -188,6 +187,9 @@ def on_key_down(key):
                 counterblue = 78
                 blue.x = sq[counterblue]
                 move_blue()
+
+            screen.fill(pygame.Color("black"))
+            bluetile = str((counterblue + 1))
 
             if dice == 1:
                 screen.blit(one, (10, 200))
