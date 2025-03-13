@@ -72,6 +72,27 @@ def move_blue():
     elif 90 <= counterblue <= 100:
         blue.y = 155
 
+def move_red():
+    if 10 <= counterred <= 19:
+        red.y = 755
+    elif 20 <= counterred <= 29:
+        red.y = 680
+    elif 30 <= counterred <= 39:
+        red.y = 605
+    elif 40 <= counterred <= 49:
+        red.y = 530
+    elif 50 <= counterred <= 59:
+        red.y = 455
+    elif 60 <= counterred <= 69:
+        red.y = 380
+    elif 70 <= counterred <= 79:
+        red.y = 305
+    elif 80 <= counterred <= 89:
+        red.y = 230
+    elif 90 <= counterred <= 100:
+        red.y = 155
+
+
 def on_key_down(key):
     global counterblue, counterred, bluepl, funnytext
     if key == keys.F:
@@ -81,7 +102,7 @@ def on_key_down(key):
     elif key == keys.L:
         pgzrun.quit()
     elif key == keys.O:
-        blue.x = sq7
+        blue.x = sq[3]
     elif key == keys.P:
         blue.x = sq[0]
         blue.y = 830
@@ -91,6 +112,7 @@ def on_key_down(key):
         red.y = 830
         counterred = 0
 
+        screen.fill(pygame.Color("black"))
         funnytext = "nuh uh"
 
     if key == keys.SPACE:
@@ -107,6 +129,31 @@ def on_key_down(key):
             if counterblue == 3:
                 counterblue = 13
                 blue.x = sq[counterblue]
+                move_blue()
+            elif counterblue == 8:
+                counterblue = 30
+                blue.x = sq[counterblue]
+                move_blue()
+            elif counterblue == 20:
+                counterblue = 41
+                blue.x = sq[counterblue]
+                move_blue()
+            elif counterblue == 27:
+                counterblue = 83
+                blue.x = sq[counterblue]
+                move_blue()
+            elif counterblue == 50:
+                counterblue = 66
+                blue.x = sq[counterblue]
+                move_blue()
+            elif counterblue == 72:
+                counterblue = 90
+                blue.x = sq[counterblue]
+                move_blue()
+            elif counterblue == 79:
+                counterblue = 98
+                blue.x = sq[counterblue]
+                move_blue()
 
             if dice == 1:
                 screen.blit(one, (10, 200))
@@ -131,24 +178,36 @@ def on_key_down(key):
 
             red.x = sq[counterred]
 
-            if 10 <= counterred <= 19:
-                red.y = 755
-            elif 20 <= counterred <= 29:
-                red.y = 680
-            elif 30 <= counterred <= 39:
-                red.y = 605
-            elif 40 <= counterred <= 49:
-                red.y = 530
-            elif 50 <= counterred <= 59:
-                red.y = 455
-            elif 60 <= counterred <= 69:
-                red.y = 380
-            elif 70 <= counterred <= 79:
-                red.y = 305
-            elif 80 <= counterred <= 89:
-                red.y = 230
-            elif 90 <= counterred <= 100:
-                red.y = 155
+            move_red()
+
+            if counterred == 3:
+                counterred = 13
+                red.x = sq[counterred]
+                move_red()
+            elif counterred == 8:
+                counterred = 30
+                red.x = sq[counterred]
+                move_red()
+            elif counterred == 20:
+                counterred = 41
+                red.x = sq[counterred]
+                move_red()
+            elif counterred == 27:
+                counterred = 83
+                red.x = sq[counterred]
+                move_red()
+            elif counterred == 50:
+                counterred = 66
+                red.x = sq[counterred]
+                move_red()
+            elif counterred == 72:
+                counterred = 90
+                red.x = sq[counterred]
+                move_red()
+            elif counterred == 79:
+                counterred = 98
+                red.x = sq[counterred]
+                move_red()
 
             if dice == 1:
                 screen.blit(one, (10, 200))
