@@ -49,8 +49,10 @@ redtile = "0"
 
 my_font = pygame.font.SysFont('Comic Sans MS', 30)
 
+dice = 1
 
 def draw():
+    global dice
     screen.blit(main_background, (0, 0))  # Position (0, 0) starts from the top-left corner
 
     # Draw the board background (snakes.jpg)
@@ -74,6 +76,19 @@ def draw():
     red_tile = my_font.render(redtile, False, (0, 0, 0))
     screen.blit(blue_tile, (1200, 330))
     screen.blit(red_tile, (1200, 480))
+
+    if dice == 1:
+        screen.blit(one, (10, 200))
+    elif dice == 2:
+        screen.blit(two, (10, 200))
+    elif dice == 3:
+        screen.blit(three, (10, 200))
+    elif dice == 4:
+        screen.blit(four, (10, 200))
+    elif dice == 5:
+        screen.blit(five, (10, 200))
+    elif dice == 6:
+        screen.blit(six, (10, 200))
 
 def move_blue():
     global counterblue
@@ -117,7 +132,7 @@ def move_red():
         red.y = 155
 
 def on_key_down(key):
-    global counterblue, counterred, bluepl, bluetile, redtile
+    global counterblue, counterred, bluepl, bluetile, redtile, dice
     if key == keys.F:
         screen.surface = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
     elif key == keys.W:
@@ -213,19 +228,6 @@ def on_key_down(key):
             screen.fill(pygame.Color("black"))
             bluetile = str((counterblue + 1))
 
-            if dice == 1:
-                screen.blit(one, (10, 200))
-            elif dice == 2:
-                screen.blit(two, (10, 200))
-            elif dice == 3:
-                screen.blit(three, (10, 200))
-            elif dice == 4:
-                screen.blit(four, (10, 200))
-            elif dice == 5:
-                screen.blit(five, (10, 200))
-            elif dice == 6:
-                screen.blit(six, (10, 200))
-
             bluepl = False
 
         else:
@@ -303,18 +305,6 @@ def on_key_down(key):
             screen.fill(pygame.Color("black"))
             redtile = str((counterred + 1))
 
-            if dice == 1:
-                screen.blit(one, (10, 200))
-            elif dice == 2:
-                screen.blit(two, (10, 200))
-            elif dice == 3:
-                screen.blit(three, (10, 200))
-            elif dice == 4:
-                screen.blit(four, (10, 200))
-            elif dice == 5:
-                screen.blit(five, (10, 200))
-            elif dice == 6:
-                screen.blit(six, (10, 200))
             bluepl = True
 
 
