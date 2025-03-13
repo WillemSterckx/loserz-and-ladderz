@@ -11,6 +11,12 @@ pygame.mixer.music.load('lazy-day.mp3')
 pygame.mixer.music.set_volume(0.5)
 pygame.mixer.music.play(-1) #loop indefinetiely
 dice_sound = sounds.dice_sound
+dice1 = sounds.dice1
+dice2 = sounds.dice2
+dice3 = sounds.dice3
+dice4 = sounds.dice4
+dice5 = sounds.dice5
+dice6 = sounds.dice6
 
 WIDTH = 1920
 HEIGHT = 1080
@@ -80,16 +86,22 @@ def draw():
 
     if dice == 1:
         screen.blit(one, (10, 200))
+        dice1.play()
     elif dice == 2:
         screen.blit(two, (10, 200))
+        dice2.play()
     elif dice == 3:
         screen.blit(three, (10, 200))
+        dice3.play()
     elif dice == 4:
         screen.blit(four, (10, 200))
+        dice4.play()
     elif dice == 5:
         screen.blit(five, (10, 200))
+        dice5.play()
     elif dice == 6:
         screen.blit(six, (10, 200))
+        dice6.play()
 
 def move_blue():
     global counterblue
