@@ -5,6 +5,11 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
 import random
 import pygame.display
 import pgzrun
+import pygame.mixer
+pygame.mixer.init()
+pygame.mixer.music.load('lazy-day.mp3')
+pygame.mixer.music.set_volume(0.5)
+pygame.mixer.music.play(-1) #loop indefinetiely
 
 WIDTH = 1920
 HEIGHT = 1080
@@ -110,7 +115,6 @@ def move_red():
         red.y = 230
     elif 90 <= counterred <= 100:
         red.y = 155
-
 
 def on_key_down(key):
     global counterblue, counterred, bluepl, bluetile, redtile
