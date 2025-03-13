@@ -19,6 +19,7 @@ three = pygame.image.load('images/dice-six-faces-three.png')
 four = pygame.image.load('images/dice-six-faces-four.png')
 five = pygame.image.load('images/dice-six-faces-five.png')
 six = pygame.image.load('images/dice-six-faces-six.png')
+paper = pygame.image.load('images/paper.png')
 
 blue = Actor("blue", (422, 830))
 red = Actor("red", (422, 830))
@@ -47,9 +48,9 @@ def draw():
     screen.blit(background, (385, 120))
     blue.draw()
     red.draw()
-
     text_surface = my_font.render(funnytext, False, (255, 255, 255))
     screen.blit(text_surface, (0, 0))
+    screen.blit(paper, (1150, 0))
 
 def move_blue():
     global counterblue
