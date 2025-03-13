@@ -106,17 +106,16 @@ def on_key_down(key):
         pgzrun.quit()
     elif key == keys.O:
         blue.x = sq[3]
-    elif key == keys.P:
+    elif key == keys.R:
         blue.x = sq[0]
         blue.y = 830
         counterblue = 0
+        bluetile = "0"
 
         red.x = sq[0]
         red.y = 830
         counterred = 0
-
-        # screen.fill(pygame.Color("black"))
-        # bluetile = "nuh uh"
+        redtile = "0"
 
     if key == keys.SPACE:
         if bluepl:
