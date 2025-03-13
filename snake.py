@@ -79,16 +79,22 @@ def draw():
 
     if dice == 1:
         screen.blit(one, (10, 200))
+        dice1.play()
     elif dice == 2:
         screen.blit(two, (10, 200))
+        dice2.play()
     elif dice == 3:
         screen.blit(three, (10, 200))
+        dice3.play()
     elif dice == 4:
         screen.blit(four, (10, 200))
+        dice4.play()
     elif dice == 5:
         screen.blit(five, (10, 200))
+        dice5.play()
     elif dice == 6:
         screen.blit(six, (10, 200))
+        dice6.play()
 
 def move_blue():
     global counterblue
