@@ -7,13 +7,16 @@ import pygame.display
 import pgzrun
 import pygame.mixer
 pygame.mixer.init()
-pygame.mixer.music.load('lazy-day.mp3')
+pygame.mixer.music.load('sounds/lazy-day.mp3')
 pygame.mixer.music.set_volume(0.5)
 pygame.mixer.music.play(-1) #loop indefinetiely
 dice_sound = sounds.dice_sound
 
 WIDTH = 1920
 HEIGHT = 1080
+
+game_over = False
+winner = None
 
 pygame.display.set_caption('backgroun image example')
 main_background = pygame.image.load('images/background1.jpg')
@@ -48,48 +51,49 @@ bluepl = True
 bluetile = "0"
 redtile = "0"
 
+
+
 my_font = pygame.font.SysFont('Comic Sans MS', 30)
 
 dice = 1
 
 def draw():
-    global dice
-    screen.blit(main_background, (0, 0))  # Position (0, 0) starts from the top-left corner
+    global game_over, winner
 
-    # Draw the board background (snakes.jpg)
-    screen.blit(background, (385, 120))  # Adjust position as needed
+    if not game_over:
+        screen.blit(main_background, (0, 0))
+        screen.blit(background, (385, 120))
+        blue.draw()
+        red.draw()
+        screen.blit(paper, (1150, 200))
+        blue_tile = my_font.render(bluetile, False, (0, 0, 0))
+        red_tile = my_font.render(redtile, False, (0, 0, 0))
+        screen.blit(blue_tile, (1200, 330))
+        screen.blit(red_tile, (1200, 480))
 
-    # Draw other elements (players, text, etc.)
-    blue.draw()
-    red.draw()
-
-    screen.blit(paper, (1150, 200))
-    blue_tile = my_font.render(bluetile, False, (0, 0, 0))
-    red_tile = my_font.render(redtile, False, (0, 0, 0))
-    screen.blit(blue_tile, (1200, 330))
-    screen.blit(red_tile, (1200, 480))
-    screen.blit(background, (385, 120))
-    blue.draw()
-    red.draw()
-
-    screen.blit(paper, (1150, 200))
-    blue_tile = my_font.render(bluetile, False, (0, 0, 0))
-    red_tile = my_font.render(redtile, False, (0, 0, 0))
-    screen.blit(blue_tile, (1200, 330))
-    screen.blit(red_tile, (1200, 480))
-
-    if dice == 1:
-        screen.blit(one, (10, 200))
-    elif dice == 2:
-        screen.blit(two, (10, 200))
-    elif dice == 3:
-        screen.blit(three, (10, 200))
-    elif dice == 4:
-        screen.blit(four, (10, 200))
-    elif dice == 5:
-        screen.blit(five, (10, 200))
-    elif dice == 6:
-        screen.blit(six, (10, 200))
+        if dice == 1:
+            screen.blit(one, (10, 200))
+        elif dice == 2:
+            screen.blit(two, (10, 200))
+        elif dice == 3:
+            screen.blit(three, (10, 200))
+        elif dice == 4:
+            screen.blit(four, (10, 200))
+        elif dice == 5:
+            screen.blit(five, (10, 200))
+        elif dice == 6:
+            screen.blit(six, (10, 200))
+    else:
+        # Display the game over screen
+        screen.blit(main_background, (0, 0))
+        if winner == "blue":
+            screen.blit(you_win_image_blue, (WIDTH // 2 - 100, HEIGHT // 2 - 100))
+        else:
+            screen.blit(you_win_image_red, (WIDTH // 2 - 100, HEIGHT // 2 - 100))
+        
+        # Display restart button
+        restart_button = my_font.render("Press R to Restart", False, (255, 255, 255))
+        screen.blit(restart_button, (WIDTH // 2 - 100, HEIGHT // 2 + 50))
 
 def move_blue():
     global counterblue
@@ -133,7 +137,8 @@ def move_red():
         red.y = 155
 
 def on_key_down(key):
-    global counterblue, counterred, bluepl, bluetile, redtile, dice
+    global counterblue, counterred, bluepl, bluetile, redtile, dice, game_over, winner
+
     if key == keys.F:
         screen.surface = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
     elif key == keys.W:
@@ -143,10 +148,27 @@ def on_key_down(key):
     elif key == keys.O:
         blue.x = sq[3]
     elif key == keys.R:
-        blue.x = sq[0]
-        blue.y = 830
-        counterblue = 0
-        bluetile = "0"
+        if game_over:
+            # Reset the game state
+            game_over = False
+            winner = None
+            blue.x = sq[0]
+            blue.y = 830
+            counterblue = 0
+            bluetile = "0"
+            red.x = sq[0]
+            red.y = 830
+            counterred = 0
+            redtile = "0"
+        else:
+            blue.x = sq[0]
+            blue.y = 830
+            counterblue = 0
+            bluetile = "0"
+            red.x = sq[0]
+            red.y = 830
+            counterred = 0
+            redtile = "0"
     elif key == keys.UP:  # Increase volume
         vol = min(pygame.mixer.music.get_volume() + 0.1, 1.0)
         pygame.mixer.music.set_volume(vol)
@@ -154,24 +176,20 @@ def on_key_down(key):
         vol = max(pygame.mixer.music.get_volume() - 0.1, 0.0)
         pygame.mixer.music.set_volume(vol)
 
-
-        red.x = sq[0]
-        red.y = 830
-        counterred = 0
-        redtile = "0"
-
-    if key == keys.SPACE:
+    if key == keys.SPACE and not game_over:
         dice_sound.play()
         if bluepl:
             dice = random.randint(1, 6)
             counterblue += dice
-            if counterblue > 99:
+            if counterblue >= 99:
                 counterblue = 99
+                game_over = True
+                winner = "blue"
 
             blue.x = sq[counterblue]
-
             move_blue()
 
+            # Check for snakes and ladders
             if counterblue == 3:
                 counterblue = 13
                 blue.x = sq[counterblue]
@@ -234,21 +252,21 @@ def on_key_down(key):
                 blue.x = sq[counterblue]
                 move_blue()
 
-            screen.fill(pygame.Color("black"))
             bluetile = str((counterblue + 1))
-
             bluepl = False
 
         else:
             dice = random.randint(1, 6)
             counterred += dice
-            if counterred > 99:
+            if counterred >= 99:
                 counterred = 99
+                game_over = True
+                winner = "red"
 
             red.x = sq[counterred]
-
             move_red()
 
+            # Check for snakes and ladders
             if counterred == 3:
                 counterred = 13
                 red.x = sq[counterred]
@@ -311,11 +329,8 @@ def on_key_down(key):
                 red.x = sq[counterred]
                 move_red()
 
-            screen.fill(pygame.Color("black"))
             redtile = str((counterred + 1))
-
             bluepl = True
-
 
 
 pgzrun.go()
