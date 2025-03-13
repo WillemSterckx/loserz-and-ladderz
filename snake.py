@@ -147,6 +147,13 @@ def on_key_down(key):
         blue.y = 830
         counterblue = 0
         bluetile = "0"
+    elif key == keys.UP:  # Increase volume
+        vol = min(pygame.mixer.music.get_volume() + 0.1, 1.0)
+        pygame.mixer.music.set_volume(vol)
+    elif key == keys.DOWN:  # Decrease volume
+        vol = max(pygame.mixer.music.get_volume() - 0.1, 0.0)
+        pygame.mixer.music.set_volume(vol)
+
 
         red.x = sq[0]
         red.y = 830
