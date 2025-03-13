@@ -50,11 +50,11 @@ def draw():
     blue.draw()
     red.draw()
 
-    blue_tile = my_font.render(bluetile, False, (255, 255, 255))
-    red_tile = my_font.render(redtile, False, (255, 255, 255))
+    screen.blit(paper, (1150, 0))
+    blue_tile = my_font.render(bluetile, False, (0, 0, 0))
+    red_tile = my_font.render(redtile, False, (0, 0, 0))
     screen.blit(blue_tile, (1200, 230))
     screen.blit(red_tile, (1200, 380))
-    screen.blit(paper, (1150, 0))
 
 def move_blue():
     global counterblue
