@@ -5,6 +5,11 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
 import random
 import pygame.display
 import pgzrun
+import pygame.mixer
+pygame.mixer.init()
+pygame.mixer.music.load('lazy-day.mp3')
+pygame.mixer.music.set_volume(0.5)
+pygame.mixer.music.play(-1) #loop indefinetiely
 
 WIDTH = 1920
 HEIGHT = 1080
