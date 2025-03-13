@@ -40,6 +40,9 @@ paper = pygame.image.load('images/paper.png')
 blue = Actor("blue", (422, 830))
 red = Actor("red", (422, 830))
 
+you_win_image_blue = pygame.image.load('images/blue_wins.jpg')
+you_win_image_red = pygame.image.load('images/red_wins.jpg')
+
 sq = [422, 497, 572, 647, 722, 797, 872, 947, 1022, 1097,
       1097, 1022, 947, 872, 797, 722, 647, 572, 497, 422,
       422, 497, 572, 647, 722, 797, 872, 947, 1022, 1097,
@@ -78,18 +81,29 @@ def draw():
         screen.blit(blue_tile, (1200, 330))
         screen.blit(red_tile, (1200, 480))
 
-    if dice == 1:
-        screen.blit(one, (10, 200))
-    elif dice == 2:
-        screen.blit(two, (10, 200))
-    elif dice == 3:
-        screen.blit(three, (10, 200))
-    elif dice == 4:
-        screen.blit(four, (10, 200))
-    elif dice == 5:
-        screen.blit(five, (10, 200))
-    elif dice == 6:
-        screen.blit(six, (10, 200))
+        if dice == 1:
+            screen.blit(one, (10, 200))
+        elif dice == 2:
+            screen.blit(two, (10, 200))
+        elif dice == 3:
+            screen.blit(three, (10, 200))
+        elif dice == 4:
+            screen.blit(four, (10, 200))
+        elif dice == 5:
+            screen.blit(five, (10, 200))
+        elif dice == 6:
+            screen.blit(six, (10, 200))
+    else:
+        # Game Over Screen
+        screen.blit(main_background, (0, 0))
+        if winner == "blue":
+            screen.blit(you_win_image_blue, (WIDTH // 2 - 250, HEIGHT // 2 - 250))
+        else:
+            screen.blit(you_win_image_red, (WIDTH // 2 - 250, HEIGHT // 2 - 250))
+        
+        # Display restart prompt
+        restart_text = my_font.render("Press R to Restart", False, (255, 255, 255))
+        screen.blit(restart_text, (WIDTH // 2 - 100, HEIGHT // 2 + 200))
 
 def move_blue():
     global counterblue
