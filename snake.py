@@ -10,7 +10,7 @@ WIDTH = 1920
 HEIGHT = 1080
 
 pygame.display.set_caption('backgroun image example')
-
+main_background = pygame.image.load('images/background1.jpg')
 background = pygame.image.load('images/snakes.jpg')
 
 one = pygame.image.load('images/dice-six-faces-one.png')
@@ -46,6 +46,20 @@ my_font = pygame.font.SysFont('Comic Sans MS', 30)
 
 
 def draw():
+    screen.blit(main_background, (0, 0))  # Position (0, 0) starts from the top-left corner
+
+    # Draw the board background (snakes.jpg)
+    screen.blit(background, (385, 120))  # Adjust position as needed
+
+    # Draw other elements (players, text, etc.)
+    blue.draw()
+    red.draw()
+
+    screen.blit(paper, (1150, 200))
+    blue_tile = my_font.render(bluetile, False, (0, 0, 0))
+    red_tile = my_font.render(redtile, False, (0, 0, 0))
+    screen.blit(blue_tile, (1200, 330))
+    screen.blit(red_tile, (1200, 480))
     screen.blit(background, (385, 120))
     blue.draw()
     red.draw()
