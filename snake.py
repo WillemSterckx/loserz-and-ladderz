@@ -10,6 +10,7 @@ pygame.mixer.init()
 pygame.mixer.music.load('lazy-day.mp3')
 pygame.mixer.music.set_volume(0.5)
 pygame.mixer.music.play(-1) #loop indefinetiely
+dice_sound = sounds.dice_sound
 
 WIDTH = 1920
 HEIGHT = 1080
@@ -153,6 +154,7 @@ def on_key_down(key):
         redtile = "0"
 
     if key == keys.SPACE:
+        dice_sound.play()
         if bluepl:
             dice = random.randint(1, 6)
             counterblue += dice
