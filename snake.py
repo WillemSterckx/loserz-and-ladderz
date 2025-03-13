@@ -155,6 +155,40 @@ def on_key_down(key):
                 blue.x = sq[counterblue]
                 move_blue()
 
+
+            if counterblue == 16:
+                counterblue = 6
+                blue.x = sq[counterblue]
+                move_blue()
+            elif counterblue == 53:
+                counterblue = 33
+                blue.x = sq[counterblue]
+                move_blue()
+            elif counterblue == 61:
+                counterblue = 18
+                blue.x = sq[counterblue]
+                move_blue()
+            elif counterblue == 63:
+                counterblue = 59
+                blue.x = sq[counterblue]
+                move_blue()
+            elif counterblue == 86:
+                counterblue = 35
+                blue.x = sq[counterblue]
+                move_blue()
+            elif counterblue == 91:
+                counterblue = 72
+                blue.x = sq[counterblue]
+                move_blue()
+            elif counterblue == 94:
+                counterblue = 74
+                blue.x = sq[counterblue]
+                move_blue()
+            elif counterblue == 97:
+                counterblue = 78
+                blue.x = sq[counterblue]
+                move_blue()
+
             if dice == 1:
                 screen.blit(one, (10, 200))
             elif dice == 2:
@@ -209,6 +243,39 @@ def on_key_down(key):
                 red.x = sq[counterred]
                 move_red()
 
+            if counterred == 16:
+                counterred = 6
+                red.x = sq[counterred]
+                move_red()
+            elif counterred == 53:
+                counterred = 33
+                red.x = sq[counterred]
+                move_red()
+            elif counterred == 61:
+                counterred = 18
+                red.x = sq[counterred]
+                move_red()
+            elif counterred == 63:
+                counterred = 59
+                red.x = sq[counterred]
+                move_red()
+            elif counterred == 86:
+                counterred = 35
+                red.x = sq[counterred]
+                move_red()
+            elif counterred == 91:
+                counterred = 72
+                red.x = sq[counterred]
+                move_red()
+            elif counterred == 94:
+                counterred = 74
+                red.x = sq[counterred]
+                move_red()
+            elif counterred == 97:
+                counterred = 78
+                red.x = sq[counterred]
+                move_red()
+
             if dice == 1:
                 screen.blit(one, (10, 200))
             elif dice == 2:
@@ -229,7 +296,5 @@ def update():
         blue.x = blue.x - 1
     elif keyboard.right:
         blue.x = blue.x + 1
-
-
 
 pgzrun.go()
