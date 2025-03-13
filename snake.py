@@ -11,6 +11,12 @@ pygame.mixer.music.load('sounds/lazy-day.mp3')
 pygame.mixer.music.set_volume(0.5)
 pygame.mixer.music.play(-1) #loop indefinetiely
 dice_sound = sounds.dice_sound
+dice1 = sounds.dice1
+dice2 = sounds.dice2
+dice3 = sounds.dice3
+dice4 = sounds.dice4
+dice5 = sounds.dice5
+dice6 = sounds.dice6
 
 WIDTH = 1920
 HEIGHT = 1080
@@ -71,29 +77,18 @@ def draw():
         screen.blit(blue_tile, (1200, 330))
         screen.blit(red_tile, (1200, 480))
 
-        if dice == 1:
-            screen.blit(one, (10, 200))
-        elif dice == 2:
-            screen.blit(two, (10, 200))
-        elif dice == 3:
-            screen.blit(three, (10, 200))
-        elif dice == 4:
-            screen.blit(four, (10, 200))
-        elif dice == 5:
-            screen.blit(five, (10, 200))
-        elif dice == 6:
-            screen.blit(six, (10, 200))
-    else:
-        # Display the game over screen
-        screen.blit(main_background, (0, 0))
-        if winner == "blue":
-            screen.blit(you_win_image_blue, (WIDTH // 2 - 100, HEIGHT // 2 - 100))
-        else:
-            screen.blit(you_win_image_red, (WIDTH // 2 - 100, HEIGHT // 2 - 100))
-        
-        # Display restart button
-        restart_button = my_font.render("Press R to Restart", False, (255, 255, 255))
-        screen.blit(restart_button, (WIDTH // 2 - 100, HEIGHT // 2 + 50))
+    if dice == 1:
+        screen.blit(one, (10, 200))
+    elif dice == 2:
+        screen.blit(two, (10, 200))
+    elif dice == 3:
+        screen.blit(three, (10, 200))
+    elif dice == 4:
+        screen.blit(four, (10, 200))
+    elif dice == 5:
+        screen.blit(five, (10, 200))
+    elif dice == 6:
+        screen.blit(six, (10, 200))
 
 def move_blue():
     global counterblue
