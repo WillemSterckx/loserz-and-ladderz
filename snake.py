@@ -1,4 +1,5 @@
 import os
+import time
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
 
@@ -185,6 +186,9 @@ def on_key_down(key):
             move_blue()
             sound = pygame.mixer.Sound(f"sounds/dice{dice}.wav")
             sound.play()
+            time.sleep(2)
+            sounds = pygame.mixer.Sound(f"sounds/space{counterblue + 1}.wav")
+            sounds.play()
 
             # Check for snakes and ladders
             if counterblue == 3:
@@ -264,6 +268,9 @@ def on_key_down(key):
             move_red()
             sound = pygame.mixer.Sound(f"sounds/dice{dice}.wav")
             sound.play()
+            time.sleep(2)
+            sounds = pygame.mixer.Sound(f"sounds/space{counterred + 1}.wav")
+            sounds.play()
 
             # Check for snakes and ladders
             if counterred == 3:
