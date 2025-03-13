@@ -77,24 +77,35 @@ def draw():
         screen.blit(blue_tile, (1200, 330))
         screen.blit(red_tile, (1200, 480))
 
-    if dice == 1:
-        screen.blit(one, (10, 200))
-        dice1.play()
-    elif dice == 2:
-        screen.blit(two, (10, 200))
-        dice2.play()
-    elif dice == 3:
-        screen.blit(three, (10, 200))
-        dice3.play()
-    elif dice == 4:
-        screen.blit(four, (10, 200))
-        dice4.play()
-    elif dice == 5:
-        screen.blit(five, (10, 200))
-        dice5.play()
-    elif dice == 6:
-        screen.blit(six, (10, 200))
-        dice6.play()
+        if dice == 1:
+            screen.blit(one, (10, 200))
+            dice1.play()
+        elif dice == 2:
+            screen.blit(two, (10, 200))
+            dice2.play()
+        elif dice == 3:
+            screen.blit(three, (10, 200))
+            dice3.play()
+        elif dice == 4:
+            screen.blit(four, (10, 200))
+            dice4.play()
+        elif dice == 5:
+            screen.blit(five, (10, 200))
+            dice5.play()
+        elif dice == 6:
+            screen.blit(six, (10, 200))
+            dice6.play()
+    else:
+        # Display the game over screen
+        screen.blit(main_background, (0, 0))
+        if winner == "blue":
+            screen.blit(you_win_image_blue, (WIDTH // 2 - 100, HEIGHT // 2 - 100))
+        else:
+            screen.blit(you_win_image_red, (WIDTH // 2 - 100, HEIGHT // 2 - 100))
+        
+        # Display restart button
+        restart_button = my_font.render("Press R to Restart", False, (255, 255, 255))
+        screen.blit(restart_button, (WIDTH // 2 - 100, HEIGHT // 2 + 50))
 
 def move_blue():
     global counterblue
@@ -332,6 +343,5 @@ def on_key_down(key):
 
             redtile = str((counterred + 1))
             bluepl = True
-
 
 pgzrun.go()
