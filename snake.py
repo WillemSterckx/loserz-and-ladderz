@@ -10,6 +10,7 @@ import pygame.mixer
 import socket
 import threading
 import pyautogui
+import numpy as np
 
 
 pygame.mixer.init()
@@ -23,6 +24,16 @@ HEIGHT = 1080
 
 delay_start_time = 0
 delay_duration = 2
+# blindblindblindblindblindblindblindblindblindblindblindblindblindblindblindblindblindblind
+colorblind_mode = False # Set to True to enable colorblind mode
+
+colorblind_mode = 0 
+
+COLORBLIND_FILTERS = {
+    1: np.array([[0.43, 0.72, -0.15], [0.34, 0.57, 0.09], [-0.02, 0.03, 1.00]]),  # Deuteranopia
+    2: np.array([[0.20, 0.99, -0.19], [0.16, 0.79, 0.04], [0.01, -0.01, 1.00]]),  # Protanopia
+    3: np.array([[0.95, 0.05, 0.00], [0.00, 0.43, 0.57], [0.00, 0.47, 0.53]])   # Tritanopia
+}
 
 # Server setup
 SERVER_IP = "0.0.0.0"  # Listen on all interfaces
@@ -105,6 +116,22 @@ def start_server():
 server_thread = threading.Thread(target=start_server)
 server_thread.daemon = True  # Daemonize thread to exit when the main program exits
 server_thread.start()
+
+def apply_colorblind_filter():
+    if colorblind_mode == 0:
+        return  # No filter applied
+
+    # Get the current screen image
+    screen_surface = pygame.display.get_surface()
+    img = pygame.surfarray.array3d(screen_surface)
+
+    # Apply color transformation matrix
+    filter_matrix = COLORBLIND_FILTERS[colorblind_mode]
+    filtered_img = np.dot(img, filter_matrix.T).clip(0, 255).astype(np.uint8)
+
+    # Update the screen with the new filtered image
+    pygame.surfarray.blit_array(screen_surface, filtered_img)
+
 def draw():
     global game_over, winner
 
@@ -142,6 +169,8 @@ def draw():
         # Display restart prompt
         restart_text = my_font.render("Press R to Restart", False, (255, 255, 255))
         screen.blit(restart_text, (WIDTH // 2 - 100, HEIGHT // 2 + 200))
+    if colorblind_mode:
+        apply_colorblind_filter()
 
 def move_blue():
     global counterblue
@@ -186,7 +215,7 @@ def move_red():
 
 def on_key_down(key):
 
-    global counterblue, counterred, bluepl, bluetile, redtile, dice, game_over, winner
+    global counterblue, counterred, bluepl, bluetile, redtile, dice, game_over, winner,colorblind_mode
 
     if key == keys.F:
         screen.surface = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
@@ -194,6 +223,9 @@ def on_key_down(key):
         screen.surface = pygame.display.set_mode((WIDTH, HEIGHT))
     elif key == keys.L:
         pgzrun.quit()
+    elif key == keys.B:  # Toggle colorblind mode
+        colorblind_mode = (colorblind_mode + 1) % 4  # 0 → 1 → 2 → 3 → 0
+        print(f"Colorblind Mode: {colorblind_mode}") 
     elif key == keys.O:
         blue.x = sq[3]
     elif key == keys.R:
