@@ -9,6 +9,7 @@ import pgzrun
 import pygame.mixer
 import socket 
 import threading
+import numpy as np
 
 
 pygame.mixer.init()
@@ -22,6 +23,16 @@ HEIGHT = 1080
 
 delay_start_time = 0
 delay_duration = 2
+# blindblindblindblindblindblindblindblindblindblindblindblindblindblindblindblindblindblind
+noen_mode = False # Set to True to enable colorblind mode
+
+colorblind_mode = 0 
+
+COLORBLIND_FILTERS = {
+    1: np.array([[0.43, 0.72, -0.15], [0.34, 0.57, 0.09], [-0.02, 0.03, 1.00]]),  # Deuteranopia
+    2: np.array([[0.20, 0.99, -0.19], [0.16, 0.79, 0.04], [0.01, -0.01, 1.00]]),  # Protanopia
+    3: np.array([[0.95, 0.05, 0.00], [0.00, 0.43, 0.57], [0.00, 0.47, 0.53]])   # Tritanopia
+}
 
 # Server setup
 SERVER_IP = "0.0.0.0"  # Listen on all interfaces
@@ -108,8 +119,33 @@ def start_server():
 server_thread = threading.Thread(target=start_server)
 server_thread.daemon = True  # Daemonize thread to exit when the main program exits
 server_thread.start()
+
+def apply_neon_filter():
+    # Get the current screen image
+    screen_surface = pygame.display.get_surface()
+    
+    # Apply a grayscale filter (common for colorblind assistance)
+    grayscale = pygame.transform.laplacian(screen_surface)  # Simulated deuteranopia filter
+    screen.blit(grayscale, (0, 0))
+    
+    # Draw the filtered image onto the screen
+def apply_colorblind_filter():
+    if colorblind_mode == 0:
+        return  # No filter applied
+
+    # Get the current screen image
+    screen_surface = pygame.display.get_surface()
+    img = pygame.surfarray.array3d(screen_surface)
+
+    # Apply color transformation matrix
+    filter_matrix = COLORBLIND_FILTERS[colorblind_mode]
+    filtered_img = np.dot(img, filter_matrix.T).clip(0, 255).astype(np.uint8)
+
+    # Update the screen with the new filtered image
+    pygame.surfarray.blit_array(screen_surface, filtered_img)
+
 def draw():
-    global game_over, winner
+    global game_over, winner,noen_mode
 
     if not game_over:
         screen.blit(main_background, (0, 0))
@@ -138,13 +174,17 @@ def draw():
         # Game Over Screen
         screen.blit(main_background, (0, 0))
         if winner == "blue":
-            screen.blit(you_win_image_blue, (WIDTH // 2 - 250, HEIGHT // 2 - 250))
+            screen.blit(you_win_image_blue, (360, 140))
         else:
-            screen.blit(you_win_image_red, (WIDTH // 2 - 250, HEIGHT // 2 - 250))
+            screen.blit(you_win_image_red, (360, 140))
         
         # Display restart prompt
         restart_text = my_font.render("Press R to Restart", False, (255, 255, 255))
-        screen.blit(restart_text, (WIDTH // 2 - 100, HEIGHT // 2 + 200))
+        screen.blit(restart_text, (620, 560))
+    if colorblind_mode:
+        apply_colorblind_filter()
+    if noen_mode:
+        apply_neon_filter()
 
 def move_blue():
     global counterblue
@@ -189,7 +229,7 @@ def move_red():
 
 def on_key_down(key):
 
-    global counterblue, counterred, bluepl, bluetile, redtile, dice, game_over, winner, speaking, err_channel, sound_channel
+    global counterblue, counterred, bluepl, bluetile, redtile, dice, game_over, winner, colorblind_mode, noen_mode, err_channel, sound_channel
 
     if key == keys.F:
         screen.surface = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
@@ -197,8 +237,13 @@ def on_key_down(key):
         screen.surface = pygame.display.set_mode((WIDTH, HEIGHT))
     elif key == keys.L:
         pgzrun.quit()
+    elif key == keys.B:  # Toggle colorblind mode
+        colorblind_mode = (colorblind_mode + 1) % 4  # 0 → 1 → 2 → 3 → 0
+        print(f"Colorblind Mode: {colorblind_mode}") 
     elif key == keys.O:
-        blue.x = sq[3]
+        blue.x = sq[99]
+    if key == keys.N:  # Toggle colorblind mode
+        noen_mode = not noen_mode
     elif key == keys.R:
         if game_over:
             # Reset the game state
@@ -227,7 +272,7 @@ def on_key_down(key):
     elif key == keys.DOWN:  # Decrease volume
         vol = max(pygame.mixer.music.get_volume() - 0.1, 0.0)
         pygame.mixer.music.set_volume(vol)
-        
+
     if sound_channel.get_busy():
         err_sound = pygame.mixer.Sound("sounds/err.wav")
         err_channel.play(err_sound)
