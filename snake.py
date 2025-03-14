@@ -453,5 +453,6 @@ def on_key_down(key):
                     redtile = str((counterred + 1))
                     bluepl = True
         
-
+startup_sound = pygame.mixer.Sound("sounds/startup.wav")
+sound_channel.play(startup_sound)
 pgzrun.go()
