@@ -10,7 +10,7 @@ import pygame.mixer
 import socket 
 import threading
 import numpy as np
-
+kill = False
 
 pygame.mixer.init()
 pygame.mixer.music.load('sounds/lazy-day.mp3')
