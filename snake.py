@@ -17,12 +17,6 @@ pygame.mixer.music.load('sounds/lazy-day.mp3')
 pygame.mixer.music.set_volume(0.5)
 pygame.mixer.music.play(-1) #loop indefinetiely
 dice_sound = sounds.dice_sound
-dice1 = sounds.dice1
-dice2 = sounds.dice2
-dice3 = sounds.dice3
-dice4 = sounds.dice4
-dice5 = sounds.dice5
-dice6 = sounds.dice6
 
 WIDTH = 1920
 HEIGHT = 1080
