@@ -7,6 +7,11 @@ import random
 import pygame.display
 import pgzrun
 import pygame.mixer
+import socket
+import threading
+import pyautogui
+
+
 pygame.mixer.init()
 pygame.mixer.music.load('sounds/lazy-day.mp3')
 pygame.mixer.music.set_volume(0.5)
@@ -21,6 +26,13 @@ dice6 = sounds.dice6
 
 WIDTH = 1920
 HEIGHT = 1080
+
+delay_start_time = 0
+delay_duration = 2
+
+# Server setup
+SERVER_IP = "0.0.0.0"  # Listen on all interfaces
+SERVER_PORT = 5001
 
 game_over = False
 winner = None
@@ -66,7 +78,36 @@ redtile = "0"
 my_font = pygame.font.SysFont('Comic Sans MS', 30)
 
 dice = 1
+def start_server():
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind((SERVER_IP, SERVER_PORT))
+    server_socket.listen(1)
 
+    print("Waiting for connection...")
+    client_socket, client_address = server_socket.accept()
+    print(f"Connected to {client_address}")
+
+    def handle_input(input_data):
+        if input_data == "SELECT":
+            print("Select button pressed")
+            on_key_down(keys.SPACE)  # Call the game's on_key_down function
+            
+
+    try:
+        while True:
+            data = client_socket.recv(1024).decode()
+            if data:
+                handle_input(data)
+    except KeyboardInterrupt:
+        print("Exiting...")
+    finally:
+        client_socket.close()
+        server_socket.close()
+
+# Start the server in a separate thread
+server_thread = threading.Thread(target=start_server)
+server_thread.daemon = True  # Daemonize thread to exit when the main program exits
+server_thread.start()
 def draw():
     global game_over, winner
 
@@ -147,6 +188,7 @@ def move_red():
         red.y = 155
 
 def on_key_down(key):
+
     global counterblue, counterred, bluepl, bluetile, redtile, dice, game_over, winner
 
     if key == keys.F:
@@ -186,170 +228,174 @@ def on_key_down(key):
         vol = max(pygame.mixer.music.get_volume() - 0.1, 0.0)
         pygame.mixer.music.set_volume(vol)
 
-    if key == keys.SPACE and not game_over:
-        dice_sound.play()
-        if bluepl:
-            dice = random.randint(1, 6)
-            counterblue += dice
-            if counterblue >= 99:
-                counterblue = 99
-                game_over = True
-                winner = "blue"
+    if key == keys.SPACE or key == "SELECT":
+        
+        if not game_over:
+            pyautogui.press('b')
+            dice_sound.play()
+            if bluepl:
+                dice = random.randint(1, 6)
+                counterblue += dice
+                if counterblue >= 99:
+                    counterblue = 99
+                    game_over = True
+                    winner = "blue"
 
-            blue.x = sq[counterblue]
-            move_blue()
-            sound = pygame.mixer.Sound(f"sounds/dice{dice}.wav")
-            sound.play()
-            time.sleep(2)
-            sounds = pygame.mixer.Sound(f"sounds/space{counterblue + 1}.wav")
-            sounds.play()
+                blue.x = sq[counterblue]
+                move_blue()
+                sound = pygame.mixer.Sound(f"sounds/dice{dice}.wav")
+                sound.play()
+                time.sleep(2)
+                sounds = pygame.mixer.Sound(f"sounds/space{counterblue + 1}.wav")
+                sounds.play()
 
-            # Check for snakes and ladders
-            if counterblue == 3:
-                counterblue = 13
-                blue.x = sq[counterblue]
-                move_blue()
-            elif counterblue == 8:
-                counterblue = 30
-                blue.x = sq[counterblue]
-                move_blue()
-            elif counterblue == 20:
-                counterblue = 41
-                blue.x = sq[counterblue]
-                move_blue()
-            elif counterblue == 27:
-                counterblue = 83
-                blue.x = sq[counterblue]
-                move_blue()
-            elif counterblue == 50:
-                counterblue = 66
-                blue.x = sq[counterblue]
-                move_blue()
-            elif counterblue == 72:
-                counterblue = 90
-                blue.x = sq[counterblue]
-                move_blue()
-            elif counterblue == 79:
-                counterblue = 98
-                blue.x = sq[counterblue]
-                move_blue()
+                # Check for snakes and ladders
+                if counterblue == 3:
+                    counterblue = 13
+                    blue.x = sq[counterblue]
+                    move_blue()
+                elif counterblue == 8:
+                    counterblue = 30
+                    blue.x = sq[counterblue]
+                    move_blue()
+                elif counterblue == 20:
+                    counterblue = 41
+                    blue.x = sq[counterblue]
+                    move_blue()
+                elif counterblue == 27:
+                    counterblue = 83
+                    blue.x = sq[counterblue]
+                    move_blue()
+                elif counterblue == 50:
+                    counterblue = 66
+                    blue.x = sq[counterblue]
+                    move_blue()
+                elif counterblue == 72:
+                    counterblue = 90
+                    blue.x = sq[counterblue]
+                    move_blue()
+                elif counterblue == 79:
+                    counterblue = 98
+                    blue.x = sq[counterblue]
+                    move_blue()
 
-            if counterblue == 16:
-                counterblue = 6
-                blue.x = sq[counterblue]
-                move_blue()
-            elif counterblue == 53:
-                counterblue = 33
-                blue.x = sq[counterblue]
-                move_blue()
-            elif counterblue == 61:
-                counterblue = 18
-                blue.x = sq[counterblue]
-                move_blue()
-            elif counterblue == 63:
-                counterblue = 59
-                blue.x = sq[counterblue]
-                move_blue()
-            elif counterblue == 86:
-                counterblue = 35
-                blue.x = sq[counterblue]
-                move_blue()
-            elif counterblue == 91:
-                counterblue = 72
-                blue.x = sq[counterblue]
-                move_blue()
-            elif counterblue == 94:
-                counterblue = 74
-                blue.x = sq[counterblue]
-                move_blue()
-            elif counterblue == 97:
-                counterblue = 78
-                blue.x = sq[counterblue]
-                move_blue()
+                if counterblue == 16:
+                    counterblue = 6
+                    blue.x = sq[counterblue]
+                    move_blue()
+                elif counterblue == 53:
+                    counterblue = 33
+                    blue.x = sq[counterblue]
+                    move_blue()
+                elif counterblue == 61:
+                    counterblue = 18
+                    blue.x = sq[counterblue]
+                    move_blue()
+                elif counterblue == 63:
+                    counterblue = 59
+                    blue.x = sq[counterblue]
+                    move_blue()
+                elif counterblue == 86:
+                    counterblue = 35
+                    blue.x = sq[counterblue]
+                    move_blue()
+                elif counterblue == 91:
+                    counterblue = 72
+                    blue.x = sq[counterblue]
+                    move_blue()
+                elif counterblue == 94:
+                    counterblue = 74
+                    blue.x = sq[counterblue]
+                    move_blue()
+                elif counterblue == 97:
+                    counterblue = 78
+                    blue.x = sq[counterblue]
+                    move_blue()
 
-            bluetile = str((counterblue + 1))
-            bluepl = False
+                bluetile = str((counterblue + 1))
+                bluepl = False
 
-        else:
-            dice = random.randint(1, 6)
-            counterred += dice
-            if counterred >= 99:
-                counterred = 99
-                game_over = True
-                winner = "red"
+            else:
+                dice = random.randint(1, 6)
+                counterred += dice
+                if counterred >= 99:
+                    counterred = 99
+                    game_over = True
+                    winner = "red"
 
-            red.x = sq[counterred]
-            move_red()
-            sound = pygame.mixer.Sound(f"sounds/dice{dice}.wav")
-            sound.play()
-            time.sleep(2)
-            sounds = pygame.mixer.Sound(f"sounds/space{counterred + 1}.wav")
-            sounds.play()
+                red.x = sq[counterred]
+                move_red()
+                sound = pygame.mixer.Sound(f"sounds/dice{dice}.wav")
+                sound.play()
+                time.sleep(2)
+                sounds = pygame.mixer.Sound(f"sounds/space{counterred + 1}.wav")
+                sounds.play()
 
-            # Check for snakes and ladders
-            if counterred == 3:
-                counterred = 13
-                red.x = sq[counterred]
-                move_red()
-            elif counterred == 8:
-                counterred = 30
-                red.x = sq[counterred]
-                move_red()
-            elif counterred == 20:
-                counterred = 41
-                red.x = sq[counterred]
-                move_red()
-            elif counterred == 27:
-                counterred = 83
-                red.x = sq[counterred]
-                move_red()
-            elif counterred == 50:
-                counterred = 66
-                red.x = sq[counterred]
-                move_red()
-            elif counterred == 72:
-                counterred = 90
-                red.x = sq[counterred]
-                move_red()
-            elif counterred == 79:
-                counterred = 98
-                red.x = sq[counterred]
-                move_red()
+                # Check for snakes and ladders
+                if counterred == 3:
+                    counterred = 13
+                    red.x = sq[counterred]
+                    move_red()
+                elif counterred == 8:
+                    counterred = 30
+                    red.x = sq[counterred]
+                    move_red()
+                elif counterred == 20:
+                    counterred = 41
+                    red.x = sq[counterred]
+                    move_red()
+                elif counterred == 27:
+                    counterred = 83
+                    red.x = sq[counterred]
+                    move_red()
+                elif counterred == 50:
+                    counterred = 66
+                    red.x = sq[counterred]
+                    move_red()
+                elif counterred == 72:
+                    counterred = 90
+                    red.x = sq[counterred]
+                    move_red()
+                elif counterred == 79:
+                    counterred = 98
+                    red.x = sq[counterred]
+                    move_red()
 
-            if counterred == 16:
-                counterred = 6
-                red.x = sq[counterred]
-                move_red()
-            elif counterred == 53:
-                counterred = 33
-                red.x = sq[counterred]
-                move_red()
-            elif counterred == 61:
-                counterred = 18
-                red.x = sq[counterred]
-                move_red()
-            elif counterred == 63:
-                counterred = 59
-                red.x = sq[counterred]
-                move_red()
-            elif counterred == 86:
-                counterred = 35
-                red.x = sq[counterred]
-                move_red()
-            elif counterred == 91:
-                counterred = 72
-                red.x = sq[counterred]
-                move_red()
-            elif counterred == 94:
-                counterred = 74
-                red.x = sq[counterred]
-                move_red()
-            elif counterred == 97:
-                counterred = 78
-                red.x = sq[counterred]
-                move_red()
+                if counterred == 16:
+                    counterred = 6
+                    red.x = sq[counterred]
+                    move_red()
+                elif counterred == 53:
+                    counterred = 33
+                    red.x = sq[counterred]
+                    move_red()
+                elif counterred == 61:
+                    counterred = 18
+                    red.x = sq[counterred]
+                    move_red()
+                elif counterred == 63:
+                    counterred = 59
+                    red.x = sq[counterred]
+                    move_red()
+                elif counterred == 86:
+                    counterred = 35
+                    red.x = sq[counterred]
+                    move_red()
+                elif counterred == 91:
+                    counterred = 72
+                    red.x = sq[counterred]
+                    move_red()
+                elif counterred == 94:
+                    counterred = 74
+                    red.x = sq[counterred]
+                    move_red()
+                elif counterred == 97:
+                    counterred = 78
+                    red.x = sq[counterred]
+                    move_red()
 
-            redtile = str((counterred + 1))
-            bluepl = True
+                redtile = str((counterred + 1))
+                bluepl = True
+        
 
 pgzrun.go()
