@@ -85,6 +85,9 @@ def start_server():
         if input_data == "SELECT":
             print("Select button pressed")
             on_key_down(keys.SPACE)  # Call the game's on_key_down function
+            draw()  # Call the draw function
+            pygame.display.flip()
+            
             
 
     try:
@@ -225,7 +228,7 @@ def on_key_down(key):
     if key == keys.SPACE or key == "SELECT":
         
         if not game_over:
-            pyautogui.press('b')
+
             dice_sound.play()
             if bluepl:
                 dice = random.randint(1, 6)
