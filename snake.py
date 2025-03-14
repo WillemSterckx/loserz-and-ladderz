@@ -9,7 +9,6 @@ import pgzrun
 import pygame.mixer
 import socket
 import threading
-import pyautogui
 import numpy as np
 
 
@@ -162,13 +161,13 @@ def draw():
         # Game Over Screen
         screen.blit(main_background, (0, 0))
         if winner == "blue":
-            screen.blit(you_win_image_blue, (WIDTH // 2 - 250, HEIGHT // 2 - 250))
+            screen.blit(you_win_image_blue, (360, 140))
         else:
-            screen.blit(you_win_image_red, (WIDTH // 2 - 250, HEIGHT // 2 - 250))
+            screen.blit(you_win_image_red, (360, 140))
         
         # Display restart prompt
         restart_text = my_font.render("Press R to Restart", False, (255, 255, 255))
-        screen.blit(restart_text, (WIDTH // 2 - 100, HEIGHT // 2 + 200))
+        screen.blit(restart_text, (620, 560))
     if colorblind_mode:
         apply_colorblind_filter()
 
@@ -227,7 +226,7 @@ def on_key_down(key):
         colorblind_mode = (colorblind_mode + 1) % 4  # 0 → 1 → 2 → 3 → 0
         print(f"Colorblind Mode: {colorblind_mode}") 
     elif key == keys.O:
-        blue.x = sq[3]
+        blue.x = sq[99]
     elif key == keys.R:
         if game_over:
             # Reset the game state
