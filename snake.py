@@ -24,7 +24,7 @@ HEIGHT = 1080
 delay_start_time = 0
 delay_duration = 2
 # blindblindblindblindblindblindblindblindblindblindblindblindblindblindblindblindblindblind
-colorblind_mode = False # Set to True to enable colorblind mode
+noen_mode = False # Set to True to enable colorblind mode
 
 colorblind_mode = 0 
 
@@ -116,6 +116,15 @@ server_thread = threading.Thread(target=start_server)
 server_thread.daemon = True  # Daemonize thread to exit when the main program exits
 server_thread.start()
 
+def apply_neon_filter():
+    # Get the current screen image
+    screen_surface = pygame.display.get_surface()
+    
+    # Apply a grayscale filter (common for colorblind assistance)
+    grayscale = pygame.transform.laplacian(screen_surface)  # Simulated deuteranopia filter
+    screen.blit(grayscale, (0, 0))
+    
+    # Draw the filtered image onto the screen
 def apply_colorblind_filter():
     if colorblind_mode == 0:
         return  # No filter applied
@@ -132,7 +141,7 @@ def apply_colorblind_filter():
     pygame.surfarray.blit_array(screen_surface, filtered_img)
 
 def draw():
-    global game_over, winner
+    global game_over, winner,noen_mode
 
     if not game_over:
         screen.blit(main_background, (0, 0))
@@ -170,6 +179,8 @@ def draw():
         screen.blit(restart_text, (620, 560))
     if colorblind_mode:
         apply_colorblind_filter()
+    if noen_mode:
+        apply_neon_filter()
 
 def move_blue():
     global counterblue
@@ -214,7 +225,7 @@ def move_red():
 
 def on_key_down(key):
 
-    global counterblue, counterred, bluepl, bluetile, redtile, dice, game_over, winner,colorblind_mode
+    global counterblue, counterred, bluepl, bluetile, redtile, dice, game_over, winner,colorblind_mode,noen_mode
 
     if key == keys.F:
         screen.surface = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
@@ -227,6 +238,8 @@ def on_key_down(key):
         print(f"Colorblind Mode: {colorblind_mode}") 
     elif key == keys.O:
         blue.x = sq[99]
+    if key == keys.N:  # Toggle colorblind mode
+        noen_mode = not noen_mode
     elif key == keys.R:
         if game_over:
             # Reset the game state
